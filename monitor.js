@@ -46,15 +46,26 @@ rl.on('line', function(line) {
 			updateTimes();
 			break;
 
+		case 'sched':
+		case 'resched':
+		case 'reschedule':
+
+			comms.send('reschedule', { id: line[1], schedule: line.slice(2).join(' ') });
+			break;
+
 		case 'q':
 		case 'quit':
 			return process.exit(0);
 		default:
-			charm.position(0, process.stdout.rows).erase('end').write(' Invalid command '.bgRed);
+			showErr('Invalid command');
 		
 	}
 
 });
+
+function showErr(txt) {
+	charm.position(0, process.stdout.rows).erase('end').write((' ' + txt.substr(0, process.stdout.columns - 3) + ' ').bgRed);
+}
 
 // override the default clearLine so that pressing enter doesn't move the cursor down a line,
 // totally blowing our carefully maintained cursor position
@@ -101,7 +112,7 @@ function render() {
 	charm.reset();
 	charm.write('ultracron monitor'.bgBlue + '\n');
 	charm.write('\n');
-	charm.write('Job                                 Runs    Last           Next                \n');
+	charm.write('Job                           Runs    Fail  Last           Next                \n');
 	charm.write('================================================================================\n'.gray);
 
 	for (var y = 5; y < jobs.length; y++) {
@@ -111,13 +122,14 @@ function render() {
 }
 
 function renderJobLine(y) {
-	var name = jobs[y].id.substr(0, 35);
+	var name = jobs[y].id.substr(0, 29);
 	if (jobs[y].stats.paused) {
 		name = name.yellow;
 	}
 
 	charm.position(0, y).erase('end').write(name);
-	charm.position(37, y).write(''+jobs[y].stats.runs);
+	charm.position(31, y).write(''+jobs[y].stats.runs);
+	charm.position(39, y).write(''+jobs[y].stats.fails);
 }
 
 // jobStats('q', {runs:0, last:Date.now(), next:Date.now() + 1000*30});
@@ -197,4 +209,8 @@ comms.on('jobs', function(msg) {
 
 comms.on('job', function(msg) {
 	jobStats(msg.id, msg.stats);
+});
+
+comms.on('err', function(msg) {
+	showErr(msg.err);
 });

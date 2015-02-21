@@ -71,12 +71,21 @@ function run(id) {
 
 	updateJob(id);
 
-	job.fn(function(err) {
+	// Promise support
+	var retval = job.fn(done);
+	if (retval && typeof retval.then == 'function') {
+		retval.then(function() {
+			done();
+		}, done);
+	}
+
+	function done(err) {
 		if (err) {
+			console.error('[' + new Date().toISOString() + '] Failed to run ' + id, err);
 			job.fails++;
 			updateJob(id);
 		}
-	});
+	}
 }
 
 function updateJob(id) {

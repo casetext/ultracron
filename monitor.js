@@ -10,7 +10,29 @@ var rl, timeMode = 'rel';
 
 rl = readline.createInterface({
 	input: process.stdin,
-	output: process.stdout
+	output: process.stdout,
+	completer: function(line) {
+		var cmds = line.split(' '), result = [];
+		switch (cmds[0]) {
+			case 'stop':
+			case 'pause':
+			case 'start':
+			case 'resume':
+			case 'r':
+			case 'run':
+			case 'sched':
+			case 'resched':
+			case 'reschedule':
+				for (var job in jobLine) {
+					if (job.indexOf(cmds[1]) == 0) {
+						result.push(cmds[0] + ' ' + job);
+						break;
+					}
+				}
+				break;
+		}
+		return [result, line];
+	}
 });
 rl.setPrompt(':');
 

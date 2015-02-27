@@ -11,11 +11,14 @@ exports.add = function(id, schedule, fn) {
 	jobs[id] = {
 		fn: fn,
 		runs: 0,
-		fails: 0
+		fails: 0,
+		paused: !!exports.addPaused
 	};
 
 	setSchedule(id, schedule);
-	run(id);
+	if (!jobs[id].paused) {
+		run(id);
+	}
 };
 
 function setSchedule(id, schedule) {
@@ -37,6 +40,12 @@ exports.remove = function(id) {
 
 
 exports.pause = function(id) {
+	if (!id) {
+		for (var job in jobs) {
+			exports.pause(job);
+		}
+		return;
+	}
 	jobs[id].paused = true;
 	updateJob(id);
 };
@@ -71,8 +80,13 @@ function run(id) {
 
 	updateJob(id);
 
+  try {
+    var retval = job.fn(done);
+  } catch (ex) {
+    done(ex);
+  }
+
 	// Promise support
-	var retval = job.fn(done);
 	if (retval && typeof retval.then == 'function') {
 		retval.then(function() {
 			done();

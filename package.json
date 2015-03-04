@@ -1,12 +1,16 @@
 {
   "name": "ultracron",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "A job scheduler that uses later",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "daguej",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/casetext/ultracron.git"
+  },
   "license": "MIT",
   "dependencies": {
     "charm": "^1.0.0",

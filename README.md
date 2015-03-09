@@ -73,6 +73,8 @@ You can also type some commands:
 - `sched <jobspec> <schedule>` - changes a job's schedule
 - `quit`
 
+`<jobspec>` is a regex that matches one or more job IDs.
+
 `ucmon` also takes some optional arguments:
 
 - `-h`, `--host` - host to connect to.  Default 127.0.0.1.

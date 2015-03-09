@@ -3,6 +3,10 @@ var charm = require('charm')(),
 	consoleTitle = require('console-title'),
 	readline = require('readline'),
 	moment = require('moment'),
+	argv = require('yargs')
+		.alias('p', 'port')
+		.alias('h', 'host')
+		.argv,
 	comms = new (require('./comms'))();
 
 var rl, timeMode = 'rel';
@@ -219,7 +223,7 @@ function formatDate(t, shouldBeFuture) {
 	}
 }
 
-comms.connect(3010, function() {
+comms.connect(argv.p || 3010, argv.h || '127.0.0.1', function() {
 	comms.send('list');
 });
 

@@ -16,9 +16,6 @@ exports.add = function(id, schedule, fn) {
 	};
 
 	setSchedule(id, schedule);
-	if (!jobs[id].paused) {
-		run(id);
-	}
 };
 
 function setSchedule(id, schedule) {
@@ -95,7 +92,7 @@ function run(id) {
 
 	function done(err) {
 		if (err) {
-			console.error('[' + new Date().toISOString() + '] Failed to run ' + id, err);
+			console.error('[' + new Date().toISOString() + '] Failed to run ' + id, err.stack);
 			job.fails++;
 			updateJob(id);
 		}

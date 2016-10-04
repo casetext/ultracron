@@ -49,8 +49,9 @@ exports.pause = function(id) {
 
 exports.resume = function(id) {
 	jobs[id].paused = false;
-	jobs[id].next = jobs[id].schedule.next(1).valueOf();
-	if (jobs[id].next <= Date.now() + 1000) {
+	var nextRun = jobs[id].schedule.next(1);
+	jobs[id].next = nextRun ? nextRun.valueOf() : null;
+	if (nextRun && jobs[id].next <= Date.now() + 1000) {
 		jobs[id].next = jobs[id].schedule.next(2)[1].valueOf();
 	}
 	updateJob(id);
@@ -62,7 +63,8 @@ exports.reschedule = function(id, opts) {
 
 	var schedule = later.parse.text(opts.schedule);
 	setSchedule(id, schedule);
-	job.next = job.schedule.next(2)[1].valueOf();
+	var nextRuns = job.schedule.next(2);
+	job.next = nextRuns ? nextRuns[1].valueOf() : null;
 	updateJob(id);
 };
 
@@ -73,7 +75,8 @@ function run(id) {
 
 	job.runs++;
 	job.last = Date.now();
-	job.next = job.schedule.next(2)[1].valueOf();
+	var nextRuns = job.schedule.next(2);
+	job.next = nextRuns ? nextRuns[1].valueOf() : null;
 
 	updateJob(id);
 

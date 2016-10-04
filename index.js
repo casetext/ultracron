@@ -127,7 +127,7 @@ comms.on('connection', function(socket) {
 				}
 			}
 		} catch (ex) {
-			console.error('Error running received command', ex);
+			console.error('Error running received command', ex.stack);
 			socket.write({msg:'err', err:ex.toString()});
 		}
 	});

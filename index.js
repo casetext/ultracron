@@ -16,6 +16,14 @@ exports.add = function(id, schedule, fn) {
 	};
 
 	setSchedule(id, schedule);
+
+	if (!exports.addPaused) {
+		var nextRun = jobs[id].schedule.next(1);
+		jobs[id].next = nextRun ? nextRun.valueOf() : null;
+		if (nextRun && jobs[id].next <= Date.now() + 1000) {
+			jobs[id].next = jobs[id].schedule.next(2)[1].valueOf();
+		}
+	}
 };
 
 function setSchedule(id, schedule) {

@@ -1,5 +1,5 @@
 var later = require('later'),
-	comms = new (require('./comms'))();
+	comms = new (require('comms'))();
 
 var jobs = {};
 

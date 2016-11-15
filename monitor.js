@@ -7,7 +7,7 @@ var charm = require('charm')(),
 		.alias('p', 'port')
 		.alias('h', 'host')
 		.argv,
-	comms = new (require('./comms'))();
+	comms = new (require('comms'))();
 
 var rl, timeMode = 'rel';
 

@@ -1,6 +1,6 @@
 {
   "name": "ultracron",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A job scheduler that uses later",
   "main": "index.js",
   "bin": {

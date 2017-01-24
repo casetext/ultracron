@@ -118,8 +118,7 @@ function updateJob(id) {
 }
 
 comms.on('connection', function(socket) {
-	socket.write({
-		msg: 'jobs',
+	socket.send('jobs', {
 		jobs: jobs
 	});
 });
@@ -139,7 +138,7 @@ comms.on('connection', function(socket) {
 			}
 		} catch (ex) {
 			console.error('Error running received command', ex.stack);
-			socket.write({msg:'err', err:ex.toString()});
+			socket.send('err', {err:ex.toString()});
 		}
 	});
 });

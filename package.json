@@ -1,6 +1,6 @@
 {
   "name": "ultracron",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A job scheduler that uses later",
   "main": "index.js",
   "bin": {
@@ -19,7 +19,7 @@
     "charm": "^1.0.0",
     "colors": "^1.0.3",
     "comms": "^0.1.1",
-    "console-title": "^1.0.1",
+    "console-title": "^1.1.0",
     "json-over-tcp": "^0.3.2",
     "later": "^1.1.6",
     "moment": "^2.15.1",
